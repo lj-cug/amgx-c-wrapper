@@ -1,6 +1,3 @@
-#ifndef __AMGX_C_WRAPPER_H
-#define __AMGX_C_WRAPPER_H
-
 #pragma once
 
 // AmgX
@@ -12,26 +9,24 @@
 
 extern "C" {
 
-    struct CAmgXSolver;
-    typedef struct CAmgXSolver CAmgXSolver;
+    typedef struct AmgXSolver* CAmgXSolver;
 
-    CAmgXSolver* createCAmgXSolver();
+    void createCAmgXSolver_(CAmgXSolver* ret);
 
-    void destroyCAmgXSolver(CAmgXSolver* solver);
+    void destroyCAmgXSolver_(CAmgXSolver* solver);
 
-    PetscErrorCode initialize(CAmgXSolver* solver, const MPI_Comm &comm,
-                            const char* modeStr, const char* cfgFile);
+    void initialize_(CAmgXSolver* solver, const MPI_Comm *comm
+            , const char* modeStr, const char* cfgFile, PetscErrorCode* err);
 
-    PetscErrorCode finalize(CAmgXSolver* solver);
+    void finalize_(CAmgXSolver* solver, PetscErrorCode* err);
 
-    PetscErrorCode setA(CAmgXSolver* solver, const Mat &A);
+    void setA_(CAmgXSolver* solver, const Mat *A, PetscErrorCode* err);
 
-    PetscErrorCode solve(CAmgXSolver* solver, Vec &p, Vec &b);
+    void solve_(CAmgXSolver* solver, Vec *p, Vec *b, PetscErrorCode* err);
 
-    PetscErrorCode getIters(CAmgXSolver* solver, int &iter);
+    void getIters_(CAmgXSolver* solver, int *iter, PetscErrorCode* err);
 
-    PetscErrorCode getResidual(CAmgXSolver* solver, const int &iter, double &res);
+    void getResidual_(CAmgXSolver* solver, const int *iter, double *res
+            , PetscErrorCode* err);
 
 }
-
-#endif
