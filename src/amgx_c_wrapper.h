@@ -11,22 +11,25 @@ extern "C" {
 
     typedef struct AmgXSolver* CAmgXSolver;
 
-    void create_camgx_solver_(CAmgXSolver* ret);
+    void camgx_getsolver_(CAmgXSolver* ret);
 
-    void destroy_camgx_solver_(CAmgXSolver* solver);
+    void camgx_destroy_solver_(CAmgXSolver* solver);
 
-    void initialize_(CAmgXSolver* solver, const MPI_Comm *comm
-            , const char* modeStr, const char* cfgFile, PetscErrorCode* err);
+    void camgx_initialize_(CAmgXSolver* solver, MPI_Fint *comm
+                           , char* modeStr, char* cfgFile,  PetscErrorCode* err);
 
-    void finalize_(CAmgXSolver* solver, PetscErrorCode* err);
+    void camgx_getinitsolver_(CAmgXSolver* ret, MPI_Fint *comm
+                           , char* modeStr, char* cfgFile);
 
-    void set_a_(CAmgXSolver* solver, const Mat *A, PetscErrorCode* err);
+    void camgx_finalize_(CAmgXSolver* solver, PetscErrorCode* err);
 
-    void solve_(CAmgXSolver* solver, Vec *p, Vec *b, PetscErrorCode* err);
+    void camgx_seta_(CAmgXSolver* solver, Mat *A, PetscErrorCode* err);
 
-    void get_iters_(CAmgXSolver* solver, int *iter, PetscErrorCode* err);
+    void camgx_solve_(CAmgXSolver* solver, Vec *p, Vec *b, PetscErrorCode* err);
 
-    void get_residual_(CAmgXSolver* solver, const int *iter, double *res
+    void camgx_getiters_(CAmgXSolver* solver, int *iter, PetscErrorCode* err);
+
+    void camgx_getresidual_(CAmgXSolver* solver, const int *iter, double *res
             , PetscErrorCode* err);
 
 }

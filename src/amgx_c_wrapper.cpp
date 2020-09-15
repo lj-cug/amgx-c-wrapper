@@ -1,46 +1,62 @@
 #include <AmgXSolver.hpp>
 
 #include "amgx_c_wrapper.h"
-
+#include <stdio.h>
+#include <string.h>
+#include <mpi.h>
 extern "C"
 {
-    void create_camgx_solver_(CAmgXSolver* ret)
+
+typedef int fint;		/* this must correspond to above */
+
+/*****************************************************************/
+
+    void camgx_getsolver_(CAmgXSolver* ret)
     {
         *ret = new AmgXSolver();
     }
 
-    void destroy_camgx_solver_(CAmgXSolver* solver)
+    void camgx_destroy_solver_(CAmgXSolver* solver)
     {
         delete *solver;
     }
 
-    void initialize_(CAmgXSolver* solver, const MPI_Comm *comm
-            , const char* modeStr, const char* cfgFile, PetscErrorCode* err)
+    void camgx_initialize_(CAmgXSolver* solver, MPI_Fint *comm
+                           , char* modeStr, char* cfgFile,  PetscErrorCode* err)
     {
-        *err = (**solver).initialize(*comm, modeStr, cfgFile);
+        MPI_Comm Ccomm;
+        Ccomm=MPI_Comm_f2c(*comm);
+        *err = (**solver).initialize(Ccomm, modeStr, cfgFile);
     }
 
-    void finalize_(CAmgXSolver* solver, PetscErrorCode* err)
+    void camgx_getinitsolver_(CAmgXSolver* ret, MPI_Fint *comm, char* modeStr, char* cfgFile)
+    {
+        MPI_Comm Ccomm;
+        Ccomm=MPI_Comm_f2c(*comm);
+        *ret = new AmgXSolver(Ccomm, modeStr, cfgFile);
+    }
+
+    void camgx_finalize_(CAmgXSolver* solver, PetscErrorCode* err)
     {
         *err = (**solver).finalize();
     }
 
-    void set_a_(CAmgXSolver* solver, const Mat *A, PetscErrorCode* err)
+    void camgx_seta_(CAmgXSolver* solver, Mat *A, PetscErrorCode* err)
     {
         *err = (**solver).setA(*A);
     }
 
-    void solve_(CAmgXSolver* solver, Vec *p, Vec *b, PetscErrorCode* err)
+    void camgx_solve_(CAmgXSolver* solver, Vec *p, Vec *b, PetscErrorCode* err)
     {
         *err = (**solver).solve(*p, *b);
     }
 
-    void get_iters_(CAmgXSolver* solver, int *iter, PetscErrorCode* err)
+    void camgx_getiters_(CAmgXSolver* solver, int *iter, PetscErrorCode* err)
     {
         *err = (**solver).getIters(*iter);
     }
 
-    void get_residual_(CAmgXSolver* solver, const int *iter, double *res
+    void camgx_getresidual_(CAmgXSolver* solver, const int *iter, double *res
             , PetscErrorCode* err)
     {
         *err = (**solver).getResidual(*iter, *res);
