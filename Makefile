@@ -1,19 +1,22 @@
 AMGXWRAPPER_INCLUDE_DIR	?= /lustre/scratch2/ws/0/hpclab48-p_hack-7/checkout/AmgXWrapper/install/include
-AMGX_INCLUDE_DIR		?= /lustre/scratch2/ws/0/hpclab48-p_hack-7/spack/opt/spack/linux-rhel7-nehalem/gcc-7.3.0/amgx-2.1.0-cemsiua4kfpirnbmj3psltjujd3wheyu/include
-PETSC_INCLUDE_DIR		?= /lustre/scratch2/ws/0/hpclab48-p_hack-7/spack/opt/spack/linux-rhel7-nehalem/gcc-7.3.0/petsc-3.13.4-ewj7iso4x7jiybfsmldux2ef2mgjkpfx/include
+AMGX_INCLUDE_DIR ?= /lustre/scratch2/ws/0/hpclab48-p_hack-7/spack/opt/spack/linux-rhel7-nehalem/gcc-7.3.0/amgx-2.1.0-cemsiua4kfpirnbmj3psltjujd3wheyu/include
+PETSC_INCLUDE_DIR ?= /lustre/scratch2/ws/0/hpclab48-p_hack-7/spack/opt/spack/linux-rhel7-nehalem/gcc-7.3.0/petsc-3.13.4-ewj7iso4x7jiybfsmldux2ef2mgjkpfx/include
 
-CC						:= gcc
-CXX						:= g++
-CFLAGS					:= -fPIC -Wall -Wextra -O2
-INCLUDES				:= -I $(AMGXWRAPPER_INCLUDE_DIR) -I $(AMGX_INCLUDE_DIR) -I $(PETSC_INCLUDE_DIR)
-TARGET_LIB				:= libamgx_c_wrapper.so
+CC := gcc
+CXX := g++
+CFLAGS := -fPIC -Wall -Wextra -O2
+INCLUDES := -I $(AMGXWRAPPER_INCLUDE_DIR) -I $(AMGX_INCLUDE_DIR) -I $(PETSC_INCLUDE_DIR)
+TARGET_LIB := libamgx_c_wrapper.so
+TARGET_LIB_STATIC := libamgx_c_wrapper.a
+SOURCES := "src/amgx_c_wrapper.cpp"
 
-SOURCES					:= "src/amgx_c_wrapper.cpp"
-
-all: $(TARGET_LIB)
+all: $(TARGET_LIB) $(TARGET_LIB_STATIC)
 
 $(TARGET_LIB): obj
 	$(CC) $(CFLAGS) -shared -o $(TARGET_LIB) amgx_c_wrapper.o
+
+$(TARGET_LIB_STATIC): obj
+	ar rcs $(TARGET_LIB_STATIC) amgx_c_wrapper.o
 
 obj:
 	$(CXX) $(CFLAGS) $(INCLUDES) -o amgx_c_wrapper.o -c $(SOURCES)
@@ -21,8 +24,8 @@ obj:
 install:
 	mkdir -p lib include
 	cp $(TARGET_LIB) lib/.
+	cp $(TARGET_LIB_STATIC) lib/.
 	cp src/amgx_c_wrapper.h include/.
 
 clean:
-	rm amgx_c_wrapper.o libamgx_c_wrapper.so
-
+	rm amgx_c_wrapper.o $(TARGET_LIB) $(TARGET_LIB_STATIC)
