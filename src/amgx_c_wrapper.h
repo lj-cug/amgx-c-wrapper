@@ -29,21 +29,4 @@ extern "C" {
     void getResidual_(CAmgXSolver* solver, const int *iter, double *res
             , PetscErrorCode* err);
 
-
-    void createCAmgXSolverStatic_();
-
-    void destroyCAmgXSolverStatic_();
-
-    void initializeStatic_(const MPI_Comm *comm, PetscErrorCode* err);
-
-    void finalizeStatic_(PetscErrorCode* err);
-
-    void setAStatic_(const Mat *A, PetscErrorCode* err);
-
-    void solveStatic_(Vec *p, Vec *b, PetscErrorCode* err);
-
-    void getItersStatic_(int *iter, PetscErrorCode* err);
-
-    void getResidualStatic_(const int *iter, double *res
-            , PetscErrorCode* err);
 }
