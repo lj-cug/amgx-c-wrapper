@@ -19,7 +19,7 @@ obj:
 	$(CXX) $(CFLAGS) $(INCLUDES) -o amgx_c_wrapper.o -c $(SOURCES)
 
 install:
-	mkdir lib include
+	mkdir -p lib include
 	cp $(TARGET_LIB) lib/.
 	cp src/amgx_c_wrapper.h include/.
 
