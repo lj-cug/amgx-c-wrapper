@@ -11,22 +11,22 @@ extern "C" {
 
     typedef struct AmgXSolver* CAmgXSolver;
 
-    void createCAmgXSolver_(CAmgXSolver* ret);
+    void create_camgx_solver_(CAmgXSolver* ret);
 
-    void destroyCAmgXSolver_(CAmgXSolver* solver);
+    void destroy_camgx_solver_(CAmgXSolver* solver);
 
     void initialize_(CAmgXSolver* solver, const MPI_Comm *comm
             , const char* modeStr, const char* cfgFile, PetscErrorCode* err);
 
     void finalize_(CAmgXSolver* solver, PetscErrorCode* err);
 
-    void setA_(CAmgXSolver* solver, const Mat *A, PetscErrorCode* err);
+    void set_a_(CAmgXSolver* solver, const Mat *A, PetscErrorCode* err);
 
     void solve_(CAmgXSolver* solver, Vec *p, Vec *b, PetscErrorCode* err);
 
-    void getIters_(CAmgXSolver* solver, int *iter, PetscErrorCode* err);
+    void get_iters_(CAmgXSolver* solver, int *iter, PetscErrorCode* err);
 
-    void getResidual_(CAmgXSolver* solver, const int *iter, double *res
+    void get_residual_(CAmgXSolver* solver, const int *iter, double *res
             , PetscErrorCode* err);
 
 }

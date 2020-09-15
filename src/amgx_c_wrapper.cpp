@@ -4,12 +4,12 @@
 
 extern "C"
 {
-    void createCAmgXSolver_(CAmgXSolver* ret)
+    void create_camgx_solver_(CAmgXSolver* ret)
     {
         *ret = new AmgXSolver();
     }
 
-    void destroyCAmgXSolver_(CAmgXSolver* solver)
+    void destroy_camgx_solver_(CAmgXSolver* solver)
     {
         delete *solver;
     }
@@ -25,7 +25,7 @@ extern "C"
         *err = (**solver).finalize();
     }
 
-    void setA_(CAmgXSolver* solver, const Mat *A, PetscErrorCode* err)
+    void set_a_(CAmgXSolver* solver, const Mat *A, PetscErrorCode* err)
     {
         *err = (**solver).setA(*A);
     }
@@ -35,12 +35,12 @@ extern "C"
         *err = (**solver).solve(*p, *b);
     }
 
-    void getIters_(CAmgXSolver* solver, int *iter, PetscErrorCode* err)
+    void get_iters_(CAmgXSolver* solver, int *iter, PetscErrorCode* err)
     {
         *err = (**solver).getIters(*iter);
     }
 
-    void getResidual_(CAmgXSolver* solver, const int *iter, double *res
+    void get_residual_(CAmgXSolver* solver, const int *iter, double *res
             , PetscErrorCode* err)
     {
         *err = (**solver).getResidual(*iter, *res);
